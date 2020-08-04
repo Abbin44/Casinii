@@ -17,23 +17,24 @@ namespace Esolang
 
             string output = null;
 
+            //First loop to check for * and / to follow BEMDAS
             for (int i = 1; i < ints.Count; i++)
             {
-                Console.WriteLine("Debug : Dice = " + ints[i].Value);
-                Console.WriteLine("Debug : Result = " + result);
+                //Console.WriteLine("Debug : Dice = " + ints[i].Value);
+                //Console.WriteLine("Debug : Result = " + result);
 
-                    if(i <= strings.Count)
+                if (i <= strings.Count)
+                {
+                    if (strings[0].Index == iterations)
                     {
-                        if (strings[0].Index == iterations)
-                        {
-                            Console.Write(result + strings[stringIndex].Text);
-                            outputList[outputIndex] = strings[stringIndex].Text;
-                            outputIndex++;
-                            result = 0;
-                            stringIndex++;
-                            Console.Write("EEEEEEEK");
-                        }
+                        Console.Write(result + strings[stringIndex].Text);
+                        outputList[outputIndex] = strings[stringIndex].Text;
+                        outputIndex++;
+                        result = 0;
+                        stringIndex++;
+                        Console.Write("EEEEEEEK");
                     }
+                }
 
                 if (operators[i - 1].Type == "*")
                 {
@@ -42,7 +43,7 @@ namespace Esolang
 
                     result *= ints[i].Value;
                     outputList.Add(result.ToString());
-                    Console.WriteLine("Performed a * :: " + result);
+                    //Console.WriteLine("Performed a * :: " + result);
 
                     iterations++;
                 }
@@ -53,22 +54,23 @@ namespace Esolang
 
                     result /= ints[i].Value;
                     outputList.Add(result.ToString());
-                    Console.WriteLine("Performed a / :: " + result);
+                    //Console.WriteLine("Performed a / :: " + result);
 
                     iterations++;
                 }
             }
 
+            //Second loop after checking for * and / to follow BEMDAS
             for (int i = 1; i < ints.Count; i++)
             {
-                Console.WriteLine("Debug : Dice = " + ints[i].Value);
-                Console.WriteLine("Debug : Result = " + result);
+                //Console.WriteLine("Debug : Dice = " + ints[i].Value);
+                //Console.WriteLine("Debug : Result = " + result);
 
                 if (operators[i - 1].Type == "-")
                 {
                     result -= ints[i - 1].Value;
                     outputList.Add(result.ToString());
-                    Console.WriteLine("Performed a - :: " + result);
+                    //Console.WriteLine("Performed a - :: " + result);
 
                     iterations++;
                 }
@@ -76,12 +78,12 @@ namespace Esolang
                 {
                     result += ints[i - 1].Value;
                     outputList.Add(result.ToString());
-                    Console.WriteLine("Performed a + :: " + result);
+                    //Console.WriteLine("Performed a + :: " + result);
 
                     iterations++;
                 }
             }
-            Console.Write("The result is: " + result);
+            Console.Write("\nThe result is: " + result);
         }
     }
 }

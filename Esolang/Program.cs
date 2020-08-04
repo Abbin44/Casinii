@@ -27,25 +27,30 @@ namespace Esolang
         static int globalIndex = 0;
 
         //{Environment.UserName}
+        //F:\Programmering\C#\School\Esolang with bus\Esolang\bin\Debug\code.txt
         static string filePath;
         static void Main(string[] args)
         {
-            if (args.Length == 0)
+            // Check for correct file format and length
+            /*
+            if (!(args.Length == 1 && args[0].EndsWith(".cas")))
+            {
+                Console.WriteLine("Code not a valid file");
+                Console.ReadKey();
                 return;
-
+            }
             filePath = args[0];
+            */
 
-            //check the lenght of the code
-            int codeLenght = File.ReadLines(args[0]).First().Length;
+            filePath = @"F:\Programmering\C#\School\Esolang with bus\Esolang\bin\Debug\code.txt";
 
-            //Create the 2d array and pass on the lenght of the code
-            CreateArray(codeLenght);
+            FileHandler fh = new FileHandler(filePath);
         }
 
-        static void CreateArray(int length)
+        static public void CreateArray(int length)
         {
             //Lenght is the horizontal lenght which varies depending on the code inputed
-           var map = new char[5, length];
+            var map = new char[5, length];
 
             StreamReader sr = new StreamReader(filePath);
 
@@ -58,18 +63,20 @@ namespace Esolang
             {
                 if (lineCount <= 5)
                 {
-                    for (int i = 0; i < length;)
+                    for (int i = 0; i < length; i++)
                     {
+                        //Add all chars of line to the correct positions in the map array
                         map[lineCount, i] = line[i];
-                        i++;
                     }
                     if (lineCount < 5)
-                           lineCount++;
-                }                   
+                        lineCount++;
+                }
             }
             //Close streamreader to avoid memory leak
             sr.Close();
 
+            #region PrintArray
+            /*
             //Print array
             for (int i = 0; i < map.GetLength(0); i++)
             {
@@ -79,6 +86,8 @@ namespace Esolang
                 }
                 Console.Write(Environment.NewLine + Environment.NewLine);
             }
+            */
+            #endregion
 
             ScanForDices(length, map);
         }
@@ -88,7 +97,7 @@ namespace Esolang
         static List<StringVar> strings = new List<StringVar>();
 
         static int diceIndex = 0;
-        static void ScanForDices(int arrayLenght, char [,] _map)
+        static void ScanForDices(int arrayLenght, char[,] _map)
         {
             int diceValue = 0;
 
@@ -117,7 +126,7 @@ namespace Esolang
                     string variableName = null;
                     if (_map[4, j] == '(' && _map[4, j + 1] == '#' && _map[4, j + 2] == ')')
                     {
-                        Console.Write("Found dice with variable: \n");
+                        //Console.Write("Found dice with variable: \n");
 
                         for (int y = 3 + j; y < arrayLenght; y++)
                         {
@@ -148,36 +157,34 @@ namespace Esolang
                 string foundVariable = null;
                 if (_map[2, j] == '(' && _map[2, j + 1] == '#' && _map[2, j + 2] == ')')
                 {
-                    Console.Write("Success");
-
                     for (int l = 3 + j; l < arrayLenght; l++)
                     {
                         if (Char.IsLetter(_map[2, l]))
                             foundVariable += _map[2, l].ToString();
-                        else if(foundVariable != null) 
+                        else if (foundVariable != null)
                         {
-                            //Int Call
-                            Console.Write("Found a variable call for: " + foundVariable);
+                            //Int variable call - NOT INIT
+                            //Console.Write("Found a variable call for: " + foundVariable);
                             for (int c = 0; c < dices.Count; c++)
                             {
                                 if (foundVariable == dices[c].VariableName)
                                 {
                                     dices.Add(new Dice(globalIndex, dices[c].Value, foundVariable, true));
-                                    Console.WriteLine("\nAdded variable: " + foundVariable);
+                                    //Console.WriteLine("\nAdded variable: " + foundVariable);
                                     foundVariable = null;
                                     break;
                                 }
                             }
 
-                            //String Call
+                            //String variable call - NOT INIT
                             for (int s = 0; s < strings.Count; s++)
                             {
-                                if(foundVariable == strings[s].Name)
+                                if (foundVariable == strings[s].Name)
                                 {
                                     //
                                     //NEEDS TO BE HANDLED SOMEHOW?!?!?!
                                     //
-                                    Console.WriteLine("\nAdded string: " + foundVariable);
+                                    //Console.WriteLine("\nAdded string: " + foundVariable);
                                     foundVariable = null;
                                     break;
                                 }
@@ -186,6 +193,7 @@ namespace Esolang
                     }
                 }
                 #endregion
+
                 if (_map[2, j] == '(' && _map[2, j + 1] == '$' && _map[2, j + 2] == ')')
                 {
                     string stringName = null;
@@ -205,15 +213,15 @@ namespace Esolang
                                     strings.Add(new StringVar(stringName, stringText, globalIndex));
                                     globalIndex++;
 
-                                    Console.WriteLine("String debug: Name: " + stringName + " Text: " + stringText);
+                                    //Console.WriteLine("String debug: Name: " + stringName + " Text: " + stringText);
                                     break;
-                                }                              
+                                }
                             }
                         }
                     }
                 }
             }
-                ScanForOperators(arrayLenght, _map);
+            ScanForOperators(arrayLenght, _map);
         }
 
         static List<Operator> operators = new List<Operator>();
@@ -230,7 +238,7 @@ namespace Esolang
                         //Make sure you don't check outside the grid
                         if (j < arrayLenght - 2)
                         {
-                            if(dices.Count > 2)
+                            if (dices.Count > 2)
                             {
                                 if (_map[i, j] == 'o' && _map[i + 1, j - 1] == 'o' && _map[i + 1, j + 1] == 'o' && _map[i + 1, j] == '|')
                                     operators.Add(new Operator("/"));
@@ -297,25 +305,25 @@ namespace Esolang
         static void Clover(int D1, int D2)
         {
             result = D1 / D2;
-            Console.Write("Performed a / operation, result is " + result);
+            //Console.Write("Performed a / operation, result is " + result);
         }
 
         static void Heart(int D1, int D2)
         {
             result = D1 + D2;
-            Console.Write("Performed a + operation, result is " + result);
+            //Console.Write("Performed a + operation, result is " + result);
         }
 
         static void Diamond(int D1, int D2)
         {
             result = D1 * D2;
-            Console.Write("Performed a * operation, result is " + result);
+            //Console.Write("Performed a * operation, result is " + result);
         }
 
         static void Spade(int D1, int D2)
         {
             result = D1 - D2;
-            Console.Write("Performed a - operation, result is " + result);
+            //Console.Write("Performed a - operation, result is " + result);
         }
         #endregion
     }
