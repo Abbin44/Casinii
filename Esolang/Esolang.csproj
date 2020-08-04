@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="Dice.cs" />
     <Compile Include="Errors.cs" />
+    <Compile Include="FileHandler.cs" />
     <Compile Include="MainBus.cs" />
     <Compile Include="Operator.cs" />
     <Compile Include="Program.cs" />
