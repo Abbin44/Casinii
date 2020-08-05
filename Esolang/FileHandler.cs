@@ -46,6 +46,10 @@ namespace Esolang
 
                 for (int i = 0; i < lines.Length; i++)
                 {
+                    //Check if a line is non-existant, and make it empty in that case
+                    if (lines[i] == null)
+                        lines[i] = "";
+
                     //Check if line is less than longest line
                     if (lines[i].Length < maxLength)
                     {

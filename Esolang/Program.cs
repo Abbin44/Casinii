@@ -32,7 +32,7 @@ namespace Esolang
         static void Main(string[] args)
         {
             // Check for correct file format and length
-            /*
+            
             if (!(args.Length == 1 && args[0].EndsWith(".cas")))
             {
                 Console.WriteLine("Code not a valid file");
@@ -40,10 +40,11 @@ namespace Esolang
                 return;
             }
             filePath = args[0];
-            */
+            
 
-            filePath = @"F:\Programmering\C#\School\Esolang with bus\Esolang\bin\Debug\code.txt";
+            //filePath = @"F:\Programmering\C#\School\Esolang with bus\Esolang\bin\Debug\code.txt";
 
+            int fileLineCount = File.ReadAllLines(filePath).Length;
             FileHandler fh = new FileHandler(filePath);
         }
 
